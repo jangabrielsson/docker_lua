@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mylua
+  name: lua
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lua
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: lua
+    spec:
+      containers:
+      - image: jangabrielsson/lua5.3:latest
+        name: lua
+        command: ["cat"]
+        tty: true
+        stdin: true
+        volumeMounts:
+          - name: nfs-pvc
+            mountPath: "/mnt"
+#        args: ['-ec', 'lua -v; luarocks help']
+        resources: {}
+      volumes:
+      - name: nfs-pvc
+        persistentVolumeClaim:
+          claimName: dev-claim
+status: {}
